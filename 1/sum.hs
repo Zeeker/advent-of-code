@@ -1,18 +1,18 @@
 main :: IO ()
 main = do
-  numbers <- getNumbers
-  putStrLn . show . sum $ numbers
+  changes <- getChanges
+  putStrLn . show . sum $ changes
 
-getNumbers :: IO [Int]
-getNumbers = do
-  input <- getLine
-  case parseInput input of
+getChanges :: IO [Int]
+getChanges = do
+  maybeChange <- getLine
+  case parseChange maybeChange of
     Nothing -> return []
-    Just anInt -> do
-      moreInputs <- getNumbers
-      return (anInt : moreInputs)
+    Just aChange -> do
+      moreChanges <- getChanges
+      return (aChange : moreChanges)
 
-parseInput :: String -> Maybe Int
-parseInput ('-':num) = Just $ -1 * (read num)
-parseInput ('+':num) = Just $ read num
-parseInput _ = Nothing
+parseChange :: String -> Maybe Int
+parseChange ('-':num) = Just $ -1 * (read num)
+parseChange ('+':num) = Just $ read num
+parseChange _ = Nothing
