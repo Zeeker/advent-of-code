@@ -1,4 +1,4 @@
-import Data.Set (Set)
+import           Data.Set (Set)
 import qualified Data.Set as Set
 
 main :: IO ()
@@ -7,7 +7,7 @@ main = do
 
   let infiniteChanges = cycle changes
   case detectDuplicate infiniteChanges of
-    Nothing -> putStrLn "No duplicated frequency detected!"
+    Nothing        -> putStrLn "No duplicated frequency detected!"
     Just duplicate -> putStrLn $ "Duplicate: " ++ (show duplicate)
 
 getChanges :: IO [Int]
@@ -22,7 +22,7 @@ getChanges = do
 parseChange :: String -> Maybe Int
 parseChange ('-':num) = Just $ -1 * (read num)
 parseChange ('+':num) = Just $ read num
-parseChange _ = Nothing
+parseChange _         = Nothing
 
 detectDuplicate :: [Int] -> Maybe Int
 detectDuplicate = detectDuplicate' Set.empty 0

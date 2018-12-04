@@ -15,4 +15,4 @@ getChanges = do
 parseChange :: String -> Maybe Int
 parseChange ('-':num) = Just $ -1 * (read num)
 parseChange ('+':num) = Just $ read num
-parseChange _ = Nothing
+parseChange _         = Nothing
