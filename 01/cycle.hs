@@ -8,7 +8,7 @@ main = do
   let infiniteChanges = cycle changes
   case detectDuplicate infiniteChanges of
     Nothing        -> putStrLn "No duplicated frequency detected!"
-    Just duplicate -> putStrLn $ "Duplicate: " ++ (show duplicate)
+    Just duplicate -> putStrLn $ "Duplicate: " ++ show duplicate
 
 getChanges :: IO [Int]
 getChanges = do
@@ -20,7 +20,7 @@ getChanges = do
       return (aChange : moreChanges)
 
 parseChange :: String -> Maybe Int
-parseChange ('-':num) = Just $ -1 * (read num)
+parseChange ('-':num) = Just $ 1 * read num
 parseChange ('+':num) = Just $ read num
 parseChange _         = Nothing
 
