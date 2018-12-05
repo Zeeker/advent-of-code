@@ -6,15 +6,11 @@ main :: IO ()
 main = do
   boxIds <- getBoxIds
 
-  putStrLn $
-    case boxIdsWithOneCharDiff boxIds of
-      Nothing -> "No matching box IDs found!"
-      Just (id1, id2) ->
-        let commonChars = determineCommonChars id1 id2
-         in "Correct IDs\n" ++
-            "  " ++ id1 ++ "\n" ++
-            "  " ++ id2 ++ "\n" ++
-            "Common chars: " ++ commonChars
+  putStrLn
+    . maybe "No matching box IDs found!" boxIdsMessage
+    . boxIdsWithOneCharDiff
+    $ boxIds
+
 
 getBoxIds :: IO [String]
 getBoxIds = do
@@ -25,6 +21,7 @@ getBoxIds = do
     Just boxId -> do
       moreBoxIds <- getBoxIds
       return (boxId : moreBoxIds)
+
 
 parseBoxId :: String -> Maybe String
 parseBoxId []    = Nothing
@@ -38,12 +35,14 @@ boxIdsWithOneCharDiff (boxId:boxIds) =
     Nothing  -> boxIdsWithOneCharDiff boxIds
     Just ids -> Just ids
 
+
 maybeCorrectIds :: String -> [String] -> Maybe (String, String)
 maybeCorrectIds id ids =
   case filter ((==1) . charDiff id) ids of
     []    -> Nothing
     [id2] -> Just (id, id2)
     list  -> trace ("Unexpected filter result: " ++ (show list)) Nothing
+
 
 charDiff :: String -> String -> Int
 charDiff [] [] = 0
@@ -54,6 +53,14 @@ charDiff (char1:chars1) (char2:chars2)
   | otherwise = diff
   where diff = charDiff chars1 chars2
 
+
+boxIdsMessage :: (String, String) -> String
+boxIdsMessage (id1, id2) =
+  let commonChars = determineCommonChars id1 id2
+    in "Correct IDs\n" ++
+      "  " ++ id1 ++ "\n" ++
+      "  " ++ id2 ++ "\n" ++
+      "Common chars: " ++ commonChars
 
 determineCommonChars :: String -> String -> String
 determineCommonChars chars1 chars2 =
